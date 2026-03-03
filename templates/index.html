@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <title>Brawl Arena</title>
+    <link rel="stylesheet" href="/static/css/style.css?v=28">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+</head>
+<body>
+    <!-- ROTATE PHONE overlay (portrait only) -->
+    <div id="rotate-overlay">
+        <div class="rotate-content">
+            <div class="rotate-icon">📱↔️</div>
+            <div class="rotate-text">Bitte drehe dein Handy quer!</div>
+            <div class="rotate-sub">Landscape-Modus wird benötigt</div>
+        </div>
+    </div>
+
+    <!-- LOBBY SCREEN -->
+    <div id="lobby-screen" class="screen active">
+        <div class="lobby-container">
+            <h1 class="game-title">BRAWL ARENA</h1>
+            <p class="game-subtitle">Top-Down Multiplayer Shooter</p>
+            <div class="lobby-form">
+                <input type="text" id="username-input" placeholder="Dein Name eingeben..." maxlength="16" autocomplete="off">
+                <div class="brawler-select">
+                    <h3>Wähle deinen Brawler:</h3>
+                    <div class="brawler-options">
+                        <div class="brawler-card selected" data-type="fighter">
+                            <div class="brawler-icon fighter-icon"></div>
+                            <div class="brawler-name">Fighter</div>
+                            <div class="brawler-stats">
+                                <div class="stat-line"><span class="stat-label">HP</span><div class="stat-bar"><div class="stat-fill" style="width:62%;background:#2ecc71"></div></div><span class="stat-val">100</span></div>
+                                <div class="stat-line"><span class="stat-label">DMG</span><div class="stat-bar"><div class="stat-fill" style="width:45%;background:#e74c3c"></div></div><span class="stat-val">18</span></div>
+                                <div class="stat-line"><span class="stat-label">SPD</span><div class="stat-bar"><div class="stat-fill" style="width:80%;background:#3498db"></div></div><span class="stat-val">Schnell</span></div>
+                                <div class="stat-line"><span class="stat-label">RNG</span><div class="stat-bar"><div class="stat-fill" style="width:75%;background:#f39c12"></div></div><span class="stat-val">Weit</span></div>
+                            </div>
+                        </div>
+                        <div class="brawler-card" data-type="tank">
+                            <div class="brawler-icon tank-icon"></div>
+                            <div class="brawler-name">Tank</div>
+                            <div class="brawler-stats">
+                                <div class="stat-line"><span class="stat-label">HP</span><div class="stat-bar"><div class="stat-fill" style="width:100%;background:#2ecc71"></div></div><span class="stat-val">160</span></div>
+                                <div class="stat-line"><span class="stat-label">DMG</span><div class="stat-bar"><div class="stat-fill" style="width:70%;background:#e74c3c"></div></div><span class="stat-val">28</span></div>
+                                <div class="stat-line"><span class="stat-label">SPD</span><div class="stat-bar"><div class="stat-fill" style="width:50%;background:#3498db"></div></div><span class="stat-val">Langsam</span></div>
+                                <div class="stat-line"><span class="stat-label">RNG</span><div class="stat-bar"><div class="stat-fill" style="width:55%;background:#f39c12"></div></div><span class="stat-val">Kurz</span></div>
+                            </div>
+                        </div>
+                        <div class="brawler-card" data-type="burst">
+                            <div class="brawler-icon burst-icon"></div>
+                            <div class="brawler-name">Burst</div>
+                            <div class="brawler-stats">
+                                <div class="stat-line"><span class="stat-label">HP</span><div class="stat-bar"><div class="stat-fill" style="width:69%;background:#2ecc71"></div></div><span class="stat-val">110</span></div>
+                                <div class="stat-line"><span class="stat-label">DMG</span><div class="stat-bar"><div class="stat-fill" style="width:90%;background:#e74c3c"></div></div><span class="stat-val">10x6</span></div>
+                                <div class="stat-line"><span class="stat-label">SPD</span><div class="stat-bar"><div class="stat-fill" style="width:65%;background:#3498db"></div></div><span class="stat-val">Mittel</span></div>
+                                <div class="stat-line"><span class="stat-label">RNG</span><div class="stat-bar"><div class="stat-fill" style="width:65%;background:#f39c12"></div></div><span class="stat-val">Mittel</span></div>
+                            </div>
+                        </div>
+                        <div class="brawler-card" data-type="dragonlord">
+                            <div class="brawler-icon dragonlord-icon"></div>
+                            <div class="brawler-name">Drachenlord</div>
+                            <div class="brawler-stats">
+                                <div class="stat-line"><span class="stat-label">HP</span><div class="stat-bar"><div class="stat-fill" style="width:56%;background:#2ecc71"></div></div><span class="stat-val">90</span></div>
+                                <div class="stat-line"><span class="stat-label">DMG</span><div class="stat-bar"><div class="stat-fill" style="width:85%;background:#e74c3c"></div></div><span class="stat-val">25</span></div>
+                                <div class="stat-line"><span class="stat-label">SPD</span><div class="stat-bar"><div class="stat-fill" style="width:100%;background:#3498db"></div></div><span class="stat-val">Sehr schnell</span></div>
+                                <div class="stat-line"><span class="stat-label">RNG</span><div class="stat-bar"><div class="stat-fill" style="width:35%;background:#f39c12"></div></div><span class="stat-val">Sehr kurz</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button id="join-btn" class="btn-primary">LOBBY BEITRETEN</button>
+            </div>
+            <div id="lobby-status" class="lobby-status hidden">
+                <h3>Lobby</h3>
+                <div id="lobby-players"></div>
+                <div class="bot-controls">
+                    <label class="bot-label">Bots:</label>
+                    <button id="bot-minus" class="bot-btn">−</button>
+                    <span id="bot-count">0</span>
+                    <button id="bot-plus" class="bot-btn">+</button>
+                </div>
+                <div id="bot-list"></div>
+                <button id="ready-btn" class="btn-ready">BEREIT</button>
+                <p class="lobby-hint">Spiel startet wenn alle bereit sind (min. 2 Spieler/Bots)</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div id="game-screen" class="screen">
+        <div id="game-hud">
+            <div id="hud-left">
+                <div id="hud-hp-bar-wrap">
+                    <div id="hud-hp-bar"></div>
+                </div>
+                <span id="hud-hp-text"></span>
+            </div>
+            <div id="hud-center">
+                <span id="hud-timer"></span>
+            </div>
+            <div id="hud-right">
+                <span id="hud-kills"></span>
+                <span id="hud-deaths"></span>
+                <button id="leave-btn">✕</button>
+            </div>
+        </div>
+
+        <div id="canvas-wrapper">
+            <canvas id="game-canvas"></canvas>
+            <!-- Cooldown indicator overlay -->
+            <div id="cooldown-overlay" class="hidden">
+                <div id="cooldown-bar"></div>
+            </div>
+            <!-- Respawn overlay -->
+            <div id="respawn-overlay" class="hidden">
+                <div class="respawn-content">
+                    <div class="respawn-skull">ELIMINIERT</div>
+                    <div id="respawn-timer">Respawn in 3...</div>
+                </div>
+            </div>
+            <!-- Bush indicator -->
+            <div id="bush-indicator" class="hidden">IM BUSCH - VERSTECKT</div>
+            <!-- Minimap -->
+            <canvas id="minimap"></canvas>
+        </div>
+
+        <!-- Control mode toggle (mobile only, shown via JS) -->
+        <button id="ctrl-mode-btn" class="hidden">🎮 Joystick</button>
+
+        <!-- Kill Feed -->
+        <div id="kill-feed"></div>
+        <!-- Damage Numbers -->
+        <div id="damage-numbers"></div>
+    </div>
+
+    <!-- GAME OVER SCREEN -->
+    <div id="gameover-screen" class="screen">
+        <div class="gameover-container">
+            <h1 id="gameover-title">Spiel vorbei!</h1>
+            <div id="gameover-stats"></div>
+            <button id="restart-btn" class="btn-primary">ZURÜCK ZUR LOBBY</button>
+        </div>
+    </div>
+
+    <script src="/static/js/game.js?v=28"></script>
+</body>
+</html>

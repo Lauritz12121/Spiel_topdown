@@ -1,0 +1,747 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #0d1117;
+    color: #eee;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* Screens */
+.screen {
+    display: none;
+    width: 100%;
+    height: 100%;
+    height: 100dvh;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+.screen.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===================== LOBBY ===================== */
+.lobby-container {
+    text-align: center;
+    max-width: 520px;
+    width: 94%;
+    max-height: 100vh;
+    max-height: 100dvh;
+    overflow-y: auto;
+    padding: 12px 0;
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+}
+
+.game-title {
+    font-size: 2.4rem;
+    margin-bottom: 4px;
+    color: #f39c12;
+    text-shadow: 0 0 30px rgba(243, 156, 18, 0.5);
+    letter-spacing: 4px;
+    font-weight: 900;
+}
+
+.game-subtitle {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 20px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.lobby-form {
+    background: #161b22;
+    padding: 24px 20px;
+    border-radius: 16px;
+    border: 1px solid #30363d;
+}
+
+#username-input {
+    width: 100%;
+    padding: 16px;
+    font-size: 1.1rem;
+    border: 2px solid #30363d;
+    border-radius: 12px;
+    background: #0d1117;
+    color: #eee;
+    outline: none;
+    margin-bottom: 18px;
+    text-align: center;
+    -webkit-appearance: none;
+    appearance: none;
+}
+#username-input:focus {
+    border-color: #f39c12;
+}
+
+.brawler-select h3 {
+    margin-bottom: 10px;
+    color: #8b949e;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.brawler-options {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+}
+
+.brawler-card {
+    background: #0d1117;
+    border: 2px solid #30363d;
+    border-radius: 14px;
+    padding: 12px 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex: 1 1 28%;
+    min-width: 0;
+    max-width: 170px;
+    touch-action: manipulation;
+}
+.brawler-card:active {
+    transform: scale(0.97);
+}
+.brawler-card.selected {
+    border-color: #f39c12;
+    box-shadow: 0 0 20px rgba(243, 156, 18, 0.25);
+    background: #1a1510;
+}
+
+.brawler-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    margin: 0 auto 8px;
+    border: 3px solid rgba(255,255,255,0.1);
+}
+.fighter-icon { background: radial-gradient(circle at 35% 35%, #5dade2, #2980b9); }
+.tank-icon { background: radial-gradient(circle at 35% 35%, #ec7063, #c0392b); }
+.burst-icon { background: radial-gradient(circle at 35% 35%, #58d68d, #27ae60); }
+.dragonlord-icon { background: radial-gradient(circle at 35% 35%, #bb8fce, #9b59b6); }
+
+.brawler-name {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.brawler-stats {
+    text-align: left;
+}
+
+.stat-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 4px;
+    font-size: 0.7rem;
+}
+
+.stat-label {
+    width: 28px;
+    color: #8b949e;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.stat-bar {
+    flex: 1;
+    height: 6px;
+    background: #21262d;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.stat-fill {
+    height: 100%;
+    border-radius: 3px;
+}
+
+.stat-val {
+    width: 44px;
+    text-align: right;
+    color: #8b949e;
+    font-size: 0.65rem;
+    flex-shrink: 0;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 18px;
+    font-size: 1.15rem;
+    border: none;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #f39c12, #e67e22);
+    color: #fff;
+    cursor: pointer;
+    font-weight: 800;
+    letter-spacing: 1px;
+    transition: transform 0.15s, box-shadow 0.15s;
+    -webkit-appearance: none;
+    appearance: none;
+    touch-action: manipulation;
+}
+.btn-primary:active {
+    transform: scale(0.97);
+    box-shadow: 0 2px 15px rgba(243, 156, 18, 0.5);
+}
+
+.btn-ready {
+    width: 100%;
+    padding: 16px;
+    font-size: 1.1rem;
+    border: 2px solid #2ecc71;
+    border-radius: 14px;
+    background: transparent;
+    color: #2ecc71;
+    cursor: pointer;
+    font-weight: 800;
+    transition: all 0.2s;
+    margin-top: 12px;
+    -webkit-appearance: none;
+    appearance: none;
+    touch-action: manipulation;
+    letter-spacing: 1px;
+}
+.btn-ready:active, .btn-ready.ready {
+    background: #2ecc71;
+    color: #fff;
+}
+
+.lobby-status {
+    margin-top: 16px;
+    background: #161b22;
+    padding: 18px;
+    border-radius: 16px;
+    border: 1px solid #30363d;
+}
+
+.lobby-status h3 {
+    margin-bottom: 10px;
+    color: #f39c12;
+    font-size: 1rem;
+}
+
+.lobby-hint {
+    font-size: 0.75rem;
+    color: #484f58;
+    margin-top: 10px;
+}
+
+.lobby-player {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: #0d1117;
+    border-radius: 10px;
+    margin-bottom: 6px;
+}
+
+.lobby-player .player-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.lobby-player .ready-badge {
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+.lobby-player .ready-badge.is-ready { color: #2ecc71; }
+.lobby-player .ready-badge.is-waiting { color: #484f58; }
+
+.hidden {
+    display: none !important;
+}
+
+/* ===================== GAME HUD ===================== */
+#game-screen.active {
+    display: flex;
+    flex-direction: column;
+}
+
+#game-hud {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    background: rgba(13, 17, 23, 0.85);
+    z-index: 30;
+    min-height: 40px;
+    gap: 8px;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+#hud-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+}
+
+#hud-hp-bar-wrap {
+    width: 100px;
+    height: 14px;
+    background: #21262d;
+    border-radius: 7px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+#hud-hp-bar {
+    height: 100%;
+    background: #2ecc71;
+    border-radius: 7px;
+    transition: width 0.2s, background 0.2s;
+}
+
+#hud-hp-text {
+    font-size: 0.8rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+#hud-center {
+    font-size: 1.1rem;
+    color: #f39c12;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+}
+
+#hud-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+#hud-kills { color: #2ecc71; }
+#hud-deaths { color: #e74c3c; }
+
+#leave-btn {
+    background: rgba(231, 76, 60, 0.25);
+    border: 1px solid rgba(231, 76, 60, 0.5);
+    color: #e74c3c;
+    font-size: 1rem;
+    font-weight: 900;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+    -webkit-appearance: none;
+    appearance: none;
+    padding: 0;
+    line-height: 1;
+}
+#leave-btn:active {
+    background: rgba(231, 76, 60, 0.5);
+}
+
+/* ===================== CANVAS ===================== */
+#game-screen {
+    touch-action: none;
+}
+
+#canvas-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0a0e12;
+    position: relative;
+    overflow: hidden;
+    touch-action: none;
+}
+
+#game-canvas {
+    display: block;
+    touch-action: none;
+}
+
+/* ===================== MINIMAP ===================== */
+#minimap {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 140px;
+    height: 93px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    z-index: 25;
+    pointer-events: none;
+}
+
+/* ===================== COOLDOWN ===================== */
+#cooldown-overlay {
+    position: absolute;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    overflow: hidden;
+    z-index: 25;
+    pointer-events: none;
+}
+
+#cooldown-bar {
+    height: 100%;
+    background: #f39c12;
+    border-radius: 4px;
+    width: 100%;
+    transition: width 0.05s linear;
+}
+
+/* ===================== RESPAWN OVERLAY ===================== */
+#respawn-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 35;
+    pointer-events: none;
+}
+
+.respawn-content {
+    text-align: center;
+}
+
+.respawn-skull {
+    font-size: 2rem;
+    font-weight: 900;
+    color: #e74c3c;
+    margin-bottom: 10px;
+    letter-spacing: 3px;
+}
+
+#respawn-timer {
+    font-size: 1.2rem;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* ===================== BUSH INDICATOR ===================== */
+#bush-indicator {
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(39, 174, 96, 0.7);
+    color: #fff;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    z-index: 25;
+    pointer-events: none;
+    backdrop-filter: blur(4px);
+}
+
+/* ===================== BOT CONTROLS ===================== */
+.bot-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 12px 0 8px;
+}
+
+.bot-label {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #8b949e;
+}
+
+.bot-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    border: 2px solid #30363d;
+    background: #0d1117;
+    color: #eee;
+    font-size: 1.2rem;
+    font-weight: 800;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    touch-action: manipulation;
+    -webkit-appearance: none;
+    appearance: none;
+    transition: all 0.15s;
+}
+.bot-btn:active {
+    background: #30363d;
+    transform: scale(0.93);
+}
+
+#bot-count {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #f39c12;
+    min-width: 24px;
+    text-align: center;
+}
+
+#bot-list {
+    margin-bottom: 8px;
+}
+
+.bot-player {
+    opacity: 0.7;
+    border-left: 3px solid #f39c12;
+}
+
+/* ===================== CONTROL MODE TOGGLE ===================== */
+#ctrl-mode-btn {
+    position: fixed;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 50;
+    background: rgba(13, 17, 23, 0.85);
+    border: 1px solid #30363d;
+    color: #eee;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 8px 18px;
+    border-radius: 20px;
+    cursor: pointer;
+    touch-action: manipulation;
+    -webkit-appearance: none;
+    appearance: none;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+/* ===================== KILL FEED ===================== */
+#kill-feed {
+    position: fixed;
+    top: 48px;
+    right: 8px;
+    z-index: 25;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    pointer-events: none;
+    max-width: 250px;
+}
+
+.kill-msg {
+    background: rgba(13, 17, 23, 0.85);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    animation: killFade 4s forwards;
+    white-space: nowrap;
+    border-left: 3px solid #e74c3c;
+    backdrop-filter: blur(4px);
+}
+
+@keyframes killFade {
+    0% { opacity: 0; transform: translateX(20px); }
+    8% { opacity: 1; transform: translateX(0); }
+    75% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* ===================== DAMAGE NUMBERS ===================== */
+#damage-numbers {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 26;
+}
+
+.dmg-num {
+    position: absolute;
+    font-weight: 900;
+    font-size: 1rem;
+    color: #e74c3c;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.7);
+    animation: dmgFloat 0.8s forwards;
+    pointer-events: none;
+}
+
+@keyframes dmgFloat {
+    0% { opacity: 1; transform: translateY(0) scale(1.2); }
+    100% { opacity: 0; transform: translateY(-40px) scale(0.7); }
+}
+
+/* ===================== GAME OVER ===================== */
+.gameover-container {
+    text-align: center;
+    max-width: 420px;
+    width: 92%;
+    background: #161b22;
+    padding: 36px 24px;
+    border-radius: 20px;
+    border: 1px solid #30363d;
+}
+
+#gameover-title {
+    font-size: 1.8rem;
+    color: #f39c12;
+    margin-bottom: 20px;
+    font-weight: 900;
+    letter-spacing: 2px;
+}
+
+#gameover-stats {
+    margin-bottom: 24px;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 8px;
+    margin-bottom: 4px;
+    font-size: 0.95rem;
+}
+
+.stat-row:nth-child(1) {
+    background: rgba(243, 156, 18, 0.1);
+    border: 1px solid rgba(243, 156, 18, 0.2);
+}
+
+.stat-row:nth-child(2) {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+/* ===================== ROTATE OVERLAY ===================== */
+#rotate-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: #0d1117;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.rotate-content {
+    text-align: center;
+}
+
+.rotate-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    animation: rotateWiggle 2s ease-in-out infinite;
+}
+
+@keyframes rotateWiggle {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(15deg); }
+    75% { transform: rotate(-15deg); }
+}
+
+.rotate-text {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #f39c12;
+    margin-bottom: 8px;
+}
+
+.rotate-sub {
+    font-size: 0.85rem;
+    color: #8b949e;
+}
+
+/* ===================== RESPONSIVE ===================== */
+/* Mobile portrait: show rotate overlay */
+@media (max-width: 932px) and (orientation: portrait) {
+    #rotate-overlay {
+        display: flex !important;
+    }
+    .screen { display: none !important; }
+}
+
+@media (max-width: 932px) {
+    .game-title { font-size: 1.8rem; }
+    .game-subtitle { font-size: 0.7rem; margin-bottom: 14px; }
+    .lobby-form { padding: 18px 14px; }
+    #username-input { padding: 14px; font-size: 1rem; }
+    .brawler-card { padding: 10px 8px; }
+    .brawler-icon { width: 40px; height: 40px; }
+    .brawler-name { font-size: 0.9rem; }
+    .stat-line { font-size: 0.65rem; }
+    .btn-primary { padding: 16px; font-size: 1rem; }
+
+    #canvas-wrapper { height: 100%; }
+
+    #minimap {
+        width: 100px;
+        height: 67px;
+        top: 6px;
+        right: 6px;
+    }
+
+    #cooldown-overlay {
+        bottom: 46%;
+        width: 60px;
+    }
+
+    #bush-indicator {
+        bottom: 50%;
+        font-size: 0.65rem;
+        padding: 4px 12px;
+    }
+
+    #game-hud {
+        padding: 4px 8px;
+        min-height: 36px;
+    }
+
+    #hud-hp-bar-wrap { width: 70px; height: 12px; }
+    #hud-hp-text { font-size: 0.7rem; }
+    #hud-center { font-size: 0.9rem; }
+    #hud-right { font-size: 0.7rem; gap: 8px; }
+
+    .kill-msg { font-size: 0.65rem; }
+}
+
+@media (min-width: 933px) {
+    #canvas-wrapper { height: calc(100vh - 40px); width: 100vw; }
+    #rotate-overlay { display: none !important; }
+}
