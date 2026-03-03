@@ -4,3 +4,7 @@ python-socketio==5.10.0
 python-engineio==4.8.0
 eventlet==0.35.1
 redis==5.0.1
+flask==2.3.0
+flask-socketio==5.3.0
+gunicorn==21.2.0
+eventlet==0.33.3
